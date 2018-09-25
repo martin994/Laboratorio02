@@ -51,7 +51,7 @@ public class ProductoRepository {
     }
 
     public List<Producto> buscarPorCategoria(Categoria cat){
-        List<Producto> resultado = new ArrayList<>();
+        List<Producto> resultado = new ArrayList<Producto>();
         for(Producto p:LISTA_PRODUCTOS){
             if(p.getCategoria().getId().equals(cat.getId())) resultado.add(p);
         }

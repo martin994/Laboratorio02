@@ -8,21 +8,21 @@
     tools:context=".ProductoLista">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewCategoria"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/tvCategoria" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinnerCategorias"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textViewListProducto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/tvListaDeProd" />
 
     <ListView
         android:id="@+id/listViewProducto"
@@ -30,22 +30,25 @@
         android:layout_height="144dp" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textViewCantidad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="@string/tvCantidadAPedir" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editTextCantidad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:enabled="false"
+        android:focusable="auto"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:text="@string/edtCantidadAPedir" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonAgregar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:enabled="false"
+        android:text="@string/btnProdAddPedido" />
 </LinearLayout>

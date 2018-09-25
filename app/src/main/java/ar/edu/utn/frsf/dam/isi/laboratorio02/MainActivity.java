@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent i = new Intent(MainActivity.this,ProductoLista.class);
-                //i.putExtra("NUEVO_PEDIDO",1);
+                i.putExtra("NUEVO_PEDIDO",0);
                 //for(Producto p: repositorioProductos.getLista())
                 //i.putExtra(p.getNombre(),p.getId().toString());
                 startActivity(i);

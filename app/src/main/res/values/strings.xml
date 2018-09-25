@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Laboratorio02</string>
     <string name="main_titulo">Menu de opciones</string>
+    <string name="tvCategoria">Seleccionar Categoría</string>
+    <string name="tvListaDeProd">Productos: </string>
+    <string name="tvCantidadAPedir">Cantidad: </string>
+    <string name="edtCantidadAPedir">0</string>
+    <string name="btnProdAddPedido">Agregar</string>
+
 </resources>
