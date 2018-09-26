@@ -24,16 +24,15 @@ public class NuevoPedido extends AppCompatActivity {
         setContentView(R.layout.nuevo_pedido);
 
 
-
-        ArrayAdapter<PedidoDetalle>  adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1,(ArrayList<PedidoDetalle>) this.getIntent().getSerializableExtra("Detalles"));
-        rBtnEntregaDomicilio= (RadioButton)  findViewById(R.id.radioButtonEntregaDomicilio);
-        rBtnRetirEnLocal= (RadioButton)  findViewById(R.id.radioButtonRetirEnLocal);
-        edtDireccion= (EditText) findViewById(R.id.editTextDireccion);
+        ArrayAdapter<PedidoDetalle> adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, (ArrayList<PedidoDetalle>) this.getIntent().getSerializableExtra("Detalles"));
+        rBtnEntregaDomicilio = (RadioButton) findViewById(R.id.radioButtonEntregaDomicilio);
+        rBtnRetirEnLocal = (RadioButton) findViewById(R.id.radioButtonRetirEnLocal);
+        edtDireccion = (EditText) findViewById(R.id.editTextDireccion);
 
         rBtnEntregaDomicilio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                edtDireccion.setEnabled(true);
+                 edtDireccion.setEnabled(true);
             }
         });
         rBtnRetirEnLocal.setOnClickListener(new View.OnClickListener() {
