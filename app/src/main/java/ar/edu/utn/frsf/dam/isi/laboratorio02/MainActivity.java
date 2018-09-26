@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         setContentView(R.layout.activity_main);//se seleccionan las 3 opciones podibles en la pantalla principal
-        btnNuevoPedido = (Button) findViewById(R.id.btnMainNuevoPedido);
+        btnNuevoPedido = (Button) findViewById(R.id.btnNuevoPedido);
         btnNuevoPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
