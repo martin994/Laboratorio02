@@ -2,6 +2,7 @@ package ar.edu.utn.frsf.dam.isi.laboratorio02.dao;
 
 import android.os.Build;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Producto;
 
-public class ProductoRepository {
+public class ProductoRepository implements Serializable {
 
     private static List<Producto> LISTA_PRODUCTOS = new ArrayList<>();
     private static List<Categoria> CATEGORIAS_PRODUCTOS = new ArrayList<>();

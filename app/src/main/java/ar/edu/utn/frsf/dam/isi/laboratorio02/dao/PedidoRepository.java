@@ -1,11 +1,12 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02.dao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Pedido;
 
-public class PedidoRepository {
+public class PedidoRepository implements Serializable {
 
     private static List<Pedido> LISTA_PEDIDOS = new ArrayList<>();
     private static int GENERADOR_ID_PEDIDO = 0;

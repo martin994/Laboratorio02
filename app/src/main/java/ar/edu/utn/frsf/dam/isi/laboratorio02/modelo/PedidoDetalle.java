@@ -1,6 +1,8 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02.modelo;
 
-public class PedidoDetalle {
+import java.io.Serializable;
+
+public class PedidoDetalle implements Serializable{
 
     private static int ID_DETALLE =1;
     private Integer id;

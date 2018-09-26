@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private ProductoRepository repositorioProductos;
     private PedidoRepository repoPedido= null;
     private Pedido nuevo=null;
+    private ProductoRepository repoProducto;
 
     @Override
     protected void onActivityResult(int requestCode,int resultCode, Intent data){
@@ -50,11 +51,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            if (repoPedido==null){//si el repo no esta creado, lo creo
-                repoPedido=new PedidoRepository();
 
-            }
+
         setContentView(R.layout.activity_main);//se seleccionan las 3 opciones podibles en la pantalla principal
+            if (getIntent().getExtras()==null){//si el repo no esta creado, lo creo
+                repoPedido=new PedidoRepository();
+                repoProducto=new ProductoRepository();
+            }
+            
             btnMainNuevoPedido = (Button) findViewById(R.id.btnMainNuevoPedido);
             btnMainNuevoPedido.setOnClickListener(new View.OnClickListener() {
             @Override

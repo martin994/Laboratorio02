@@ -43,7 +43,7 @@ public class NuevoPedido extends AppCompatActivity {
         if(requestCode== RESULT_CANCELED){//si falla no hace nada
 
         }else{
-            nuevoProducto =(Producto) data.getSerializableExtra("Producto");
+            nuevoProducto =(Producto) data.getSerializableExtra("Producto");//se crea el nuevo producto, redordar agregar el retorno en ProductoLista para que esto funcione
             nuevoDetalle=new PedidoDetalle(data.getIntExtra("Cantidad",-1), nuevoProducto);
             nuevoDetalle.setPedido(nuevoPedido);
             tVTotalPedido.setText(R.string.tvTotal + nuevoPedido.total().toString());
@@ -71,7 +71,7 @@ public class NuevoPedido extends AppCompatActivity {
         btnPedidoAddProducto=(Button) findViewById(R.id.buttonAgregar);
         tVTotalPedido = (TextView) findViewById(R.id.textViewTotalPedido);
         btnHacerPedido = (Button) findViewById(R.id.buttonPedidoRealizar);
-        rBtnEntregaDomicilio.setOnClickListener(new View.OnClickListener() {
+        rBtnEntregaDomicilio.setOnClickListener(new View.OnClickListener() {//cambia el campo direccion de  habilitado a deshabilitado
             @Override
             public void onClick(View v) {
                  edtDireccion.setEnabled(true);
@@ -83,7 +83,7 @@ public class NuevoPedido extends AppCompatActivity {
                 edtDireccion.setEnabled(false);
             }
         });
-        btnPedidoAddProducto.setOnClickListener(new View.OnClickListener() {
+        btnPedidoAddProducto.setOnClickListener(new View.OnClickListener() {//
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(NuevoPedido.this, ProductoLista.class);
@@ -96,18 +96,23 @@ public class NuevoPedido extends AppCompatActivity {
         });
         btnHacerPedido.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {//se validan los campos
                 if(edtDireccion.getText().length()==0 || edtHoraEntrega.getText().length()==0 || edtCorreo.getText().length()==0){
                     CharSequence text = "Campos invalidos!";
 
                     Toast toast = Toast.makeText(getApplicationContext(), text,Toast.LENGTH_SHORT);
                     toast.show();
-                }
+                }else{// se carga el estado al pedido y se llama a la actiidad historial de pedidos
+                    nuevoPedido.setEstado(Pedido.Estado.REALIZADO);
+                    Intent i = new Intent(NuevoPedido.this, HistorialPedidos.class);
+                    i.putExtra("Pedido", (Serializable) nuevoPedido);//Implementar la clase serializable en los DAO y modelos
+                    //Deberíamos setear los repo y todos los objetos que no esten en los repo
+                    startActivity(i);
 
+                }
             }
         });
-        nuevoPedido.setEstado(Pedido.Estado.REALIZADO);
-        Intent i = new Intent(NuevoPedido.this, MainActivity.class);
-        i.putExtra("Pedido", (Serializable) nuevoPedido);//Implementar la clase serializable en los DAO y modelos
+
+
     }
 }

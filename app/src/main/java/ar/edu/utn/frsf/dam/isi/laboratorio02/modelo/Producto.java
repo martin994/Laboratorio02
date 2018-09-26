@@ -1,8 +1,9 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02.modelo;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Producto {
+public class Producto implements Serializable{
 
     private Integer id;
     private String nombre;
