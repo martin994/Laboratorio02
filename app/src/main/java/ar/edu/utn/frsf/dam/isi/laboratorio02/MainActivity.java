@@ -21,7 +21,7 @@ import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Producto;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btnNuevoPedido;
+    private Button btnMainNuevoPedido;
     private Button btnHistorial;
     private Button btnListaProductos;
     private ProductoRepository repositorioProductos;
@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         setContentView(R.layout.activity_main);//se seleccionan las 3 opciones podibles en la pantalla principal
-        btnNuevoPedido = (Button) findViewById(R.id.btnNuevoPedido);
-        btnNuevoPedido.setOnClickListener(new View.OnClickListener() {
+            btnMainNuevoPedido = (Button) findViewById(R.id.btnMainNuevoPedido);
+            btnMainNuevoPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, NuevoPedido.class);

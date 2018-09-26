@@ -6,9 +6,8 @@
     <string name="tvCantidadAPedir">Cantidad: </string>
     <string name="edtCantidadAPedir">0</string>
     <string name="btnProdAddPedido">Agregar</string>
-
     <string name="tvDatosPedido">Datos del pedido</string>
-    <string name="tvEmail">Correo electronico</string>
+    <string name="tvEmail">Correo Electronico</string>
     <string name="edtEmail">Ingrese su email</string>
     <string name="tvModoEntrega">Seleccione su modo de entrega</string>
     <string name="rbLocal">Retira en local</string>
