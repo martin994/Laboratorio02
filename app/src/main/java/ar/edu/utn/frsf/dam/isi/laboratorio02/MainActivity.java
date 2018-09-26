@@ -29,36 +29,16 @@ public class MainActivity extends AppCompatActivity {
     private Pedido nuevo=null;
     private ProductoRepository repoProducto;
 
-    @Override
-    protected void onActivityResult(int requestCode,int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);//sobreescritura para respues de los intents
-        if(requestCode== RESULT_CANCELED){//si falla no hace nada
-
-        }else{//si tiene exito toma los datos y crea el pedido, recordar que al date se lo debe parsear a long para enviarlo y viceversa
-            nuevo=new Pedido(new Date(data.getLongExtra("Fecha",-1)), (ArrayList<PedidoDetalle>)data.getSerializableExtra("Detalle"),
-                    (Pedido.Estado) data.getSerializableExtra("Estado"), data.getStringExtra("Direccion"),data.getStringExtra("Mail"),
-                    data.getBooleanExtra("Retirar",false));
-            if (repoPedido==null){//si el repo no esta creado, lo creo, y agrego el pedido
-                repoPedido=new PedidoRepository();
-                repoPedido.guardarPedido(nuevo);
-            }else{
-                repoPedido.guardarPedido(nuevo);
-            }
-        }
-
-    }
-
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
         setContentView(R.layout.activity_main);//se seleccionan las 3 opciones podibles en la pantalla principal
-            if (getIntent().getExtras()==null){//si el repo no esta creado, lo creo
+
                 repoPedido=new PedidoRepository();
                 repoProducto=new ProductoRepository();
-            }
-            
+
             btnMainNuevoPedido = (Button) findViewById(R.id.btnMainNuevoPedido);
             btnMainNuevoPedido.setOnClickListener(new View.OnClickListener() {
             @Override

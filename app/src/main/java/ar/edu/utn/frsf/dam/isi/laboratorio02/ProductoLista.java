@@ -14,8 +14,11 @@ import android.content.Intent;
 
 import java.util.ArrayList;
 
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Pedido;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.PedidoDetalle;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Producto;
 
 
@@ -26,6 +29,9 @@ public class ProductoLista extends AppCompatActivity {
     private TextView tvCantidad;
     private EditText edtCantidad;
     private Button btnAgregar;
+    private PedidoRepository repoPedido;
+    private ProductoRepository repoProducto;
+
 
 
 
@@ -34,11 +40,15 @@ public class ProductoLista extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.producto_lista);
+        repoPedido = new PedidoRepository();
+        repoProducto = new ProductoRepository();
+
         tvCategoria= (TextView) findViewById(R.id.textViewCategoria);
         tvListProducto= (TextView) findViewById(R.id.textViewListProducto);
         tvCantidad= (TextView) findViewById(R.id.textViewCantidad);
         edtCantidad = (EditText) findViewById(R.id.editTextCantidad);
         btnAgregar = (Button) findViewById(R.id.buttonAgregar);
+
         final ProductoRepository prodRepo= new ProductoRepository();//se inicializa con 4 categorias y 25 productos
 
 
@@ -98,12 +108,15 @@ public class ProductoLista extends AppCompatActivity {
          btnAgregar.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Intent i = new Intent(ProductoLista.this,MainActivity.class);
-                 i.putExtra("cantidad", Integer.getInteger(edtCantidad.getText().toString()));
-                 ArrayList prods=(ArrayList<Producto>) savedInstanceState.get("productos");
-                 i.putExtra("p",prods);
+                 Intent i = new Intent(ProductoLista.this,NuevoPedido.class);
+                 Pedido actual = repoPedido.getLista().get(repoPedido.getLista().size()-1);
+                 actual.agregarDetalle(new PedidoDetalle(Integer.getInteger(edtCantidad.getText().toString()), (Producto)listViewDeProductos.getSelectedItem()));
+
+                 startActivity(i);
              }
          });
+
+
 
     }
 }

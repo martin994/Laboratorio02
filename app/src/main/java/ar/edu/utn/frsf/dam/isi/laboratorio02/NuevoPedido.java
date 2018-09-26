@@ -14,10 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoRepository;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Pedido;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.PedidoDetalle;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Producto;
@@ -33,6 +35,8 @@ public class NuevoPedido extends AppCompatActivity {
     private EditText edtCorreo;
     private EditText edtHoraEntrega;
 
+    private  PedidoRepository repoPedido;
+    private ProductoRepository repoProducto;
     private Producto nuevoProducto=null;
     private PedidoDetalle nuevoDetalle;
     private Pedido nuevoPedido;
@@ -58,10 +62,12 @@ public class NuevoPedido extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nuevo_pedido);
+        repoPedido=new PedidoRepository();
+        repoProducto=new ProductoRepository();
+
         nuevoPedido=new Pedido();
 
-        //ArrayAdapter<PedidoDetalle> adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, (ArrayList<PedidoDetalle>) this.getIntent().getSerializableExtra("Detalles"));
-        ArrayAdapter<PedidoDetalle> adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, new ArrayList<PedidoDetalle>());
+        ArrayAdapter<PedidoDetalle> adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, nuevoPedido.getDetalle());
 
         rBtnEntregaDomicilio = (RadioButton) findViewById(R.id.radioButtonEntregaDomicilio);
         rBtnRetirEnLocal = (RadioButton) findViewById(R.id.radioButtonRetirEnLocal);
@@ -88,9 +94,7 @@ public class NuevoPedido extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(NuevoPedido.this, ProductoLista.class);
                 i.putExtra("NUEVO_PEDIDO",1);
-
                 startActivityForResult(i, 1);
-
 
             }
         });
@@ -104,9 +108,15 @@ public class NuevoPedido extends AppCompatActivity {
                     toast.show();
                 }else{// se carga el estado al pedido y se llama a la actiidad historial de pedidos
                     nuevoPedido.setEstado(Pedido.Estado.REALIZADO);
+                    nuevoPedido.setFecha(Date.valueOf(edtHoraEntrega.getText().toString()));
+                    nuevoPedido.setDireccionEnvio(edtDireccion.getText().toString());
+                    nuevoPedido.setMailContacto(edtCorreo.getText().toString());
+                    nuevoPedido.setRetirar(rBtnRetirEnLocal.isChecked());
                     Intent i = new Intent(NuevoPedido.this, HistorialPedidos.class);
-                    i.putExtra("Pedido", (Serializable) nuevoPedido);//Implementar la clase serializable en los DAO y modelos
+                    repoPedido.guardarPedido(nuevoPedido);
+
                     //Deberíamos setear los repo y todos los objetos que no esten en los repo
+
                     startActivity(i);
 
                 }
