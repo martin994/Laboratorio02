@@ -21,5 +21,10 @@
     <string name="tvTotal">Total del pedido</string>
     <string name="btnHacerPedido">Hacer Pedido</string>
     <string name="btnVolver">Volver</string>
+    <string name="tvPedidosRealizados">Pedidos realizados</string>
+    <string name="btnHistorialNuevo">Nuevo</string>
+    <string name="btnHistorialMenu">Menu</string>
+
+
 
 </resources>
