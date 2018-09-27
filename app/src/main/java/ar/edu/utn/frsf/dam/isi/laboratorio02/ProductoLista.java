@@ -120,7 +120,7 @@ public class ProductoLista extends AppCompatActivity {
                  nuevoDetalle.setPedido(actual);
                  actual.agregarDetalle(nuevoDetalle);
                  //repoPedido.getLista().(repoPedido.getLista().size()-1)
-
+                i.putExtra("Desde", 0);
                  startActivity(i);
              }
          });

@@ -1,6 +1,7 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -49,6 +50,7 @@ public class PedidosAdapter extends ArrayAdapter {
         holder.tvMailPedido.setText(unPedido.getMailContacto());
         holder.tvHoraDeEntrega.setText("Fecha:" + sdf.format(unPedido.getFecha()));
         holder.btnCancelar.setTag(position);
+        holder.btnVerdetalle.setTag(position);
         for (PedidoDetalle i : unPedido.getDetalle()) {
             cantidadUnPedido += i.getCantidad();
         }
@@ -103,6 +105,10 @@ public class PedidosAdapter extends ArrayAdapter {
             public void onClick(View v) {
                 int indice = (Integer) v.getTag();
                 Pedido pedidoSeleccionado = datos.get(indice);
+                Intent i = new Intent( getContext(), NuevoPedido.class);
+                i.putExtra("Desde",1);
+                i.putExtra("Id", pedidoSeleccionado.getId());
+                ctx.startActivity(i);
             }
         });
 

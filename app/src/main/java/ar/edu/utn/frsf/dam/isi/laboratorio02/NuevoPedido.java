@@ -57,10 +57,7 @@ public class NuevoPedido extends AppCompatActivity {
 
         nuevoPedido=new Pedido();
         ArrayAdapter<PedidoDetalle> adapDetalle;
-        if(repoPedido.getLista().size()!=0)
-            adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, repoPedido.getLista().get(repoPedido.getLista().size()-1).getDetalle());
-        else
-            adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, new ArrayList<PedidoDetalle>());
+
         rBtnEntregaDomicilio = (RadioButton) findViewById(R.id.radioButtonEntregaDomicilio);
         rBtnRetirEnLocal = (RadioButton) findViewById(R.id.radioButtonRetirEnLocal);
         edtDireccion = (EditText) findViewById(R.id.editTextDireccion);
@@ -68,11 +65,35 @@ public class NuevoPedido extends AppCompatActivity {
         btnPedidoAddProducto=(Button) findViewById(R.id.buttonAgregarProd);
         edtCorreo=(EditText) findViewById(R.id.editTextPedidoCorreo);
         edtHoraEntrega=(EditText) findViewById(R.id.editTextHoraEntrega);
-        lVPedido.setAdapter(adapDetalle);
+
         tVTotalPedido = (TextView) findViewById(R.id.textViewTotalPedido);
         btnHacerPedido = (Button) findViewById(R.id.buttonPedidoRealizar);
         if(repoPedido.getLista().size()!=0)
         tVTotalPedido.setText( "" + tVTotalPedido.getText().toString() +repoPedido.getLista().get(repoPedido.getLista().size()-1).total().toString());
+
+        if(getIntent().getIntExtra("Desde", 0)==0) {
+            if (repoPedido.getLista().size() != 0)
+                adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, repoPedido.getLista().get(repoPedido.getLista().size() - 1).getDetalle());
+            else
+                adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, new ArrayList<PedidoDetalle>());
+            lVPedido.setAdapter(adapDetalle);
+        }else
+            if(getIntent().getIntExtra("Desde", 0)==1){
+            nuevoPedido = repoPedido.buscarPorId(getIntent().getIntExtra("Id",0));
+            edtCorreo.setText(nuevoPedido.getMailContacto());
+            rBtnEntregaDomicilio.setEnabled(false);
+            rBtnRetirEnLocal.setEnabled(false);
+            if(!nuevoPedido.getRetirar()) {
+                rBtnEntregaDomicilio.setChecked(true);
+                edtDireccion.setText(nuevoPedido.getDireccionEnvio());
+            }else rBtnRetirEnLocal.setChecked(true);
+            edtHoraEntrega.setText(nuevoPedido.getFecha().toString());
+            adapDetalle= new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, nuevoPedido.getDetalle());
+            lVPedido.setAdapter(adapDetalle);
+
+                btnHacerPedido.setEnabled(false);
+                btnPedidoAddProducto.setEnabled(false);
+        }
 
         rBtnEntregaDomicilio.setOnClickListener(new View.OnClickListener() {//cambia el campo direccion de  habilitado a deshabilitad
             @Override
@@ -99,6 +120,7 @@ public class NuevoPedido extends AppCompatActivity {
         btnHacerPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//se validan los campos
+
                 if(edtDireccion.getText().length()==0 || edtHoraEntrega.getText().length()==0 || edtCorreo.getText().length()==0){
                     CharSequence text = "Campos invalidos!";
 

@@ -27,6 +27,7 @@ public class PedidoHolder extends AppCompatActivity {
         this.estado=(TextView)base.findViewById(R.id.textViewEestado);
         this.tipoEntrega=(ImageView)base.findViewById(R.id.imageViewTipoEntrega);
         this.btnCancelar=(Button)base.findViewById(R.id.buttonCancelarPedido);
+        this.btnVerdetalle=(Button)base.findViewById(R.id.buttonVerDetalle);
     }
 
 

@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, NuevoPedido.class);
+                i.putExtra("Desde", 0);
                 startActivityForResult(i, 1);
             }
         });
