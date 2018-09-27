@@ -28,7 +28,7 @@ public class PedidosAdapter extends ArrayAdapter {
         this.ctx = context;
         this.datos = listaDePedidos;
     }
-
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(this.getContext());
         View fila = convertView;
@@ -41,26 +41,14 @@ public class PedidosAdapter extends ArrayAdapter {
             fila.setTag(holder);
         }
 
-        holder.btnCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int indice = (int) view.getTag();
-                Pedido pedidoSeleccionado = datos.get(indice);
-                if (pedidoSeleccionado.getEstado().equals(Pedido.Estado.REALIZADO) || pedidoSeleccionado.getEstado().equals(Pedido.Estado.ACEPTADO) || pedidoSeleccionado.getEstado().equals(Pedido.Estado.EN_PREPARACION)) {
-                    pedidoSeleccionado.setEstado(Pedido.Estado.CANCELADO);
-                    PedidosAdapter.this.notifyDataSetChanged();
-                    return;
-                }
 
-            }
-        });
 
 
         Pedido unPedido = (Pedido) super.getItem(position);
 
         holder.tvMailPedido.setText(unPedido.getMailContacto());
         holder.tvHoraDeEntrega.setText("Fecha:" + sdf.format(unPedido.getFecha()));
-
+        holder.btnCancelar.setTag(position);
         for (PedidoDetalle i : unPedido.getDetalle()) {
             cantidadUnPedido += i.getCantidad();
         }
@@ -95,6 +83,26 @@ public class PedidosAdapter extends ArrayAdapter {
         if (unPedido.getRetirar()) {
             holder.tipoEntrega.setImageResource(R.drawable.domicilio);
         } else holder.tipoEntrega.setImageResource(R.drawable.sucursal);
+
+        holder.btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int indice = (Integer) v.getTag();
+                Pedido pedidoSeleccionado = datos.get(indice);
+                if (pedidoSeleccionado.getEstado().equals(Pedido.Estado.REALIZADO) || pedidoSeleccionado.getEstado().equals(Pedido.Estado.ACEPTADO) || pedidoSeleccionado.getEstado().equals(Pedido.Estado.EN_PREPARACION)) {
+                    pedidoSeleccionado.setEstado(Pedido.Estado.CANCELADO);
+                    PedidosAdapter.this.notifyDataSetChanged();
+                    return;
+                }
+
+            }
+        });
+
+
+
+
+
+
 
         return fila;
     }

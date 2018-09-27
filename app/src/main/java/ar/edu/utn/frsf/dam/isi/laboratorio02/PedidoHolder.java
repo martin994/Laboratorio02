@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class PedidoHolder extends AppCompatActivity implements View.OnClickListener {
+public class PedidoHolder extends AppCompatActivity {
 
     public TextView tvMailPedido;
     public TextView tvHoraDeEntrega;
@@ -30,8 +30,5 @@ public class PedidoHolder extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    @Override
-    public void onClick(View v) {
 
-    }
 }
