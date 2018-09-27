@@ -24,8 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/edtEmail" />
+        android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/textViewModoEntrega"
@@ -64,8 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/edtDireccion" />
+        android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/textViewHoraEntrega"
@@ -78,8 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/edtHora" />
+        android:inputType="textPersonName" />
 
     <ListView
         android:id="@+id/listViewPedidoItems"
