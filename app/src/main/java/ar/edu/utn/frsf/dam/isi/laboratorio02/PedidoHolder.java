@@ -16,7 +16,7 @@ public class PedidoHolder extends AppCompatActivity {
     public TextView estado;
     public ImageView tipoEntrega;
     public Button btnCancelar;
-
+    public Button btnVerdetalle;
 
 
     PedidoHolder(View base){

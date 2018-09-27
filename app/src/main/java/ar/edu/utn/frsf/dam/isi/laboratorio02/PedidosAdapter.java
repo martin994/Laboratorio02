@@ -98,6 +98,13 @@ public class PedidosAdapter extends ArrayAdapter {
             }
         });
 
+        holder.btnVerdetalle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int indice = (Integer) v.getTag();
+                Pedido pedidoSeleccionado = datos.get(indice);
+            }
+        });
 
 
 
