@@ -31,7 +31,7 @@
             android:text="@string/btnHistorialNuevo" />
 
         <Button
-            android:id="@+id/botonHistorial"
+            android:id="@+id/buttonHistorialAMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

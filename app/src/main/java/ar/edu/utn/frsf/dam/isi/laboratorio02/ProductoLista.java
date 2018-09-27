@@ -70,7 +70,7 @@ public class ProductoLista extends AppCompatActivity {
         spinnerDeCategorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                adaptadorDeListViewProd.clear();
                 adaptadorDeListViewProd.addAll(repoProducto.buscarPorCategoria(repoProducto.getCategorias().get(position)));
                 listViewDeProductos.setAdapter(adaptadorDeListViewProd);
 

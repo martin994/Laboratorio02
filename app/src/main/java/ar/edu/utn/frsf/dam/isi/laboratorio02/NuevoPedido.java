@@ -37,7 +37,8 @@ public class NuevoPedido extends AppCompatActivity {
     private Button btnHacerPedido;
     private EditText edtCorreo;
     private EditText edtHoraEntrega;
-
+    private Button btnVolver;
+    private Button btnEliminar;
     private  PedidoRepository repoPedido;
     private ProductoRepository repoProducto;
     private Producto nuevoProducto=null;
@@ -65,20 +66,23 @@ public class NuevoPedido extends AppCompatActivity {
         btnPedidoAddProducto=(Button) findViewById(R.id.buttonAgregarProd);
         edtCorreo=(EditText) findViewById(R.id.editTextPedidoCorreo);
         edtHoraEntrega=(EditText) findViewById(R.id.editTextHoraEntrega);
-
+        btnVolver=(Button) findViewById(R.id.buttonPedidoVolver);
         tVTotalPedido = (TextView) findViewById(R.id.textViewTotalPedido);
         btnHacerPedido = (Button) findViewById(R.id.buttonPedidoRealizar);
+        btnEliminar = (Button) findViewById(R.id.buttonQuitarProd);
         if(repoPedido.getLista().size()!=0)
         tVTotalPedido.setText( "" + tVTotalPedido.getText().toString() +repoPedido.getLista().get(repoPedido.getLista().size()-1).total().toString());
 
         if(getIntent().getIntExtra("Desde", 0)==0) {
             if (repoPedido.getLista().size() != 0)
-                adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, repoPedido.getLista().get(repoPedido.getLista().size() - 1).getDetalle());
+                adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_selectable_list_item, repoPedido.getLista().get(repoPedido.getLista().size() - 1).getDetalle());
             else
-                adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, new ArrayList<PedidoDetalle>());
+                adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_selectable_list_item, new ArrayList<PedidoDetalle>());
             lVPedido.setAdapter(adapDetalle);
+            btnEliminar.setEnabled(true);
         }else
             if(getIntent().getIntExtra("Desde", 0)==1){
+                btnEliminar.setEnabled(false);
             nuevoPedido = repoPedido.buscarPorId(getIntent().getIntExtra("Id",0));
             edtCorreo.setText(nuevoPedido.getMailContacto());
             rBtnEntregaDomicilio.setEnabled(false);
@@ -153,7 +157,13 @@ public class NuevoPedido extends AppCompatActivity {
                 }
             }
         });
-
+        btnVolver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(NuevoPedido.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
 
     }
 }
