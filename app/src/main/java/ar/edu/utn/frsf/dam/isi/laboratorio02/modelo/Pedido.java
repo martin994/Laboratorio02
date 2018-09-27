@@ -117,7 +117,7 @@ public class Pedido implements Serializable{
     public Double total(){
         Double total = 0.0;
         for(PedidoDetalle det: detalle){
-            total+=det.getProducto().getPrecio()*det.getCantidad();
+            total+=det.getProducto().getPrecio()*Double.valueOf(det.getCantidad().toString());
         }
         return total;
     }

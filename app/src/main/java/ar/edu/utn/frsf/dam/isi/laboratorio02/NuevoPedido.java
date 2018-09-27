@@ -15,7 +15,10 @@ import android.widget.Toast;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoRepository;
@@ -61,10 +64,15 @@ public class NuevoPedido extends AppCompatActivity {
         edtDireccion = (EditText) findViewById(R.id.editTextDireccion);
         lVPedido= (ListView) findViewById(R.id.listViewPedidoItems);
         btnPedidoAddProducto=(Button) findViewById(R.id.buttonAgregarProd);
+        edtCorreo=(EditText) findViewById(R.id.editTextPedidoCorreo);
+        edtHoraEntrega=(EditText) findViewById(R.id.editTextHoraEntrega);
         lVPedido.setAdapter(adapDetalle);
         tVTotalPedido = (TextView) findViewById(R.id.textViewTotalPedido);
         btnHacerPedido = (Button) findViewById(R.id.buttonPedidoRealizar);
-        rBtnEntregaDomicilio.setOnClickListener(new View.OnClickListener() {//cambia el campo direccion de  habilitado a deshabilitado
+        if(repoPedido.getLista().size()!=0)
+        tVTotalPedido.setText( "" + tVTotalPedido.getText().toString() +repoPedido.getLista().get(repoPedido.getLista().size()-1).total().toString());
+
+        rBtnEntregaDomicilio.setOnClickListener(new View.OnClickListener() {//cambia el campo direccion de  habilitado a deshabilitad
             @Override
             public void onClick(View v) {
                  edtDireccion.setEnabled(true);
@@ -94,10 +102,19 @@ public class NuevoPedido extends AppCompatActivity {
 
                     Toast toast = Toast.makeText(getApplicationContext(), text,Toast.LENGTH_SHORT);
                     toast.show();
-                }else{// se carga el estado al pedido y se llama a la actiidad historial de pedidos
+                }else{// se carga el estado al pedido y se llama a la actividad historial de pedidos
+                    SimpleDateFormat dateFormat=new SimpleDateFormat("HH:mm");
+                    String horaString=edtHoraEntrega.getText().toString();
+                    try {
+                        java.util.Date hora =dateFormat.parse(horaString);
+                        nuevoPedido.setFecha(hora);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
                     nuevoPedido=repoPedido.getLista().get(repoPedido.getLista().size() - 1);
                     nuevoPedido.setEstado(Pedido.Estado.REALIZADO);
-                    nuevoPedido.setFecha(Date.valueOf(edtHoraEntrega.getText().toString()));
+
                     nuevoPedido.setDireccionEnvio(edtDireccion.getText().toString());
                     nuevoPedido.setMailContacto(edtCorreo.getText().toString());
                     nuevoPedido.setRetirar(rBtnRetirEnLocal.isChecked());

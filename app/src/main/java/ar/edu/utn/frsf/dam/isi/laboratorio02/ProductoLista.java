@@ -114,9 +114,13 @@ public class ProductoLista extends AppCompatActivity {
              @Override
              public void onClick(View v) {//agrgar validacion si cantidad es igual a cero, no cancelar
                  Intent i = new Intent(ProductoLista.this,NuevoPedido.class);
+                nuevoDetalle=new PedidoDetalle(Integer.parseInt(edtCantidad.getText().toString()), productoSeleccionado);
 
                  actual = repoPedido.getLista().get(repoPedido.getLista().size()-1);
-                 actual.agregarDetalle(new PedidoDetalle(Integer.getInteger(edtCantidad.getText().toString()), productoSeleccionado));
+                 nuevoDetalle.setPedido(actual);
+                 actual.agregarDetalle(nuevoDetalle);
+                 //repoPedido.getLista().(repoPedido.getLista().size()-1)
+
                  startActivity(i);
              }
          });
