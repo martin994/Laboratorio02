@@ -64,7 +64,7 @@ public class PedidosAdapter extends ArrayAdapter {
         for (PedidoDetalle i : unPedido.getDetalle()) {
             cantidadUnPedido += i.getCantidad();
         }
-        holder.tvCantidadDeItems.setText(cantidadUnPedido);
+        holder.tvCantidadDeItems.setText(""+cantidadUnPedido);
 
         holder.tvPrecio.setText(unPedido.total().toString());
 

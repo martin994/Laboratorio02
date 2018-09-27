@@ -56,9 +56,11 @@ public class NuevoPedido extends AppCompatActivity {
         repoProducto=new ProductoRepository();
 
         nuevoPedido=new Pedido();
-
-        ArrayAdapter<PedidoDetalle> adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, nuevoPedido.getDetalle());
-
+        ArrayAdapter<PedidoDetalle> adapDetalle;
+        if(repoPedido.getLista().size()!=0)
+            adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, repoPedido.getLista().get(repoPedido.getLista().size()-1).getDetalle());
+        else
+            adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, new ArrayList<PedidoDetalle>());
         rBtnEntregaDomicilio = (RadioButton) findViewById(R.id.radioButtonEntregaDomicilio);
         rBtnRetirEnLocal = (RadioButton) findViewById(R.id.radioButtonRetirEnLocal);
         edtDireccion = (EditText) findViewById(R.id.editTextDireccion);
@@ -103,6 +105,7 @@ public class NuevoPedido extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), text,Toast.LENGTH_SHORT);
                     toast.show();
                 }else{// se carga el estado al pedido y se llama a la actividad historial de pedidos
+                    nuevoPedido=repoPedido.getLista().get(repoPedido.getLista().size() - 1);
                     SimpleDateFormat dateFormat=new SimpleDateFormat("HH:mm");
                     String horaString=edtHoraEntrega.getText().toString();
                     try {
@@ -112,7 +115,7 @@ public class NuevoPedido extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    nuevoPedido=repoPedido.getLista().get(repoPedido.getLista().size() - 1);
+
                     nuevoPedido.setEstado(Pedido.Estado.REALIZADO);
 
                     nuevoPedido.setDireccionEnvio(edtDireccion.getText().toString());
