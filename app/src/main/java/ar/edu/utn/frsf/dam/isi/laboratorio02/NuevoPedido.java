@@ -41,20 +41,7 @@ public class NuevoPedido extends AppCompatActivity {
     private PedidoDetalle nuevoDetalle;
     private Pedido nuevoPedido;
 
-    @Override
-    protected void onActivityResult(int requestCode,int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);//sobreescritura para respues de los intents
-        if(requestCode== RESULT_CANCELED){//si falla no hace nada
 
-        }else{
-            nuevoProducto =(Producto) data.getSerializableExtra("Producto");//se crea el nuevo producto, redordar agregar el retorno en ProductoLista para que esto funcione
-            nuevoDetalle=new PedidoDetalle(data.getIntExtra("Cantidad",-1), nuevoProducto);
-            nuevoDetalle.setPedido(nuevoPedido);
-            tVTotalPedido.setText(R.string.tvTotal + nuevoPedido.total().toString());
-
-        }
-
-    }
 
 
 
@@ -73,8 +60,8 @@ public class NuevoPedido extends AppCompatActivity {
         rBtnRetirEnLocal = (RadioButton) findViewById(R.id.radioButtonRetirEnLocal);
         edtDireccion = (EditText) findViewById(R.id.editTextDireccion);
         lVPedido= (ListView) findViewById(R.id.listViewPedidoItems);
+        btnPedidoAddProducto=(Button) findViewById(R.id.buttonAgregarProd);
         lVPedido.setAdapter(adapDetalle);
-        btnPedidoAddProducto=(Button) findViewById(R.id.buttonAgregar);
         tVTotalPedido = (TextView) findViewById(R.id.textViewTotalPedido);
         btnHacerPedido = (Button) findViewById(R.id.buttonPedidoRealizar);
         rBtnEntregaDomicilio.setOnClickListener(new View.OnClickListener() {//cambia el campo direccion de  habilitado a deshabilitado
@@ -93,6 +80,7 @@ public class NuevoPedido extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(NuevoPedido.this, ProductoLista.class);
+                repoPedido.guardarPedido(nuevoPedido);
                 i.putExtra("NUEVO_PEDIDO",1);
                 startActivityForResult(i, 1);
 
@@ -107,13 +95,14 @@ public class NuevoPedido extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), text,Toast.LENGTH_SHORT);
                     toast.show();
                 }else{// se carga el estado al pedido y se llama a la actiidad historial de pedidos
+                    nuevoPedido=repoPedido.getLista().get(repoPedido.getLista().size() - 1);
                     nuevoPedido.setEstado(Pedido.Estado.REALIZADO);
                     nuevoPedido.setFecha(Date.valueOf(edtHoraEntrega.getText().toString()));
                     nuevoPedido.setDireccionEnvio(edtDireccion.getText().toString());
                     nuevoPedido.setMailContacto(edtCorreo.getText().toString());
                     nuevoPedido.setRetirar(rBtnRetirEnLocal.isChecked());
                     Intent i = new Intent(NuevoPedido.this, HistorialPedidos.class);
-                    repoPedido.guardarPedido(nuevoPedido);
+
 
                     //Deberíamos setear los repo y todos los objetos que no esten en los repo
 

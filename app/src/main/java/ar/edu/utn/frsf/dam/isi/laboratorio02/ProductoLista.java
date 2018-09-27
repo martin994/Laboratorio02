@@ -31,9 +31,9 @@ public class ProductoLista extends AppCompatActivity {
     private Button btnAgregar;
     private PedidoRepository repoPedido;
     private ProductoRepository repoProducto;
-
-
-
+    private PedidoDetalle nuevoDetalle;
+    private Producto productoSeleccionado;
+    private Pedido actual;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -49,9 +49,6 @@ public class ProductoLista extends AppCompatActivity {
         edtCantidad = (EditText) findViewById(R.id.editTextCantidad);
         btnAgregar = (Button) findViewById(R.id.buttonAgregar);
 
-        final ProductoRepository prodRepo= new ProductoRepository();//se inicializa con 4 categorias y 25 productos
-
-
         if((this.getIntent().getExtras().getInt("NUEVO_PEDIDO"))==1){//Si se solicita un nuevo pedido se habilitan los campos cantidad y el boton agregar punto 2.f
             edtCantidad.setEnabled(true);
             btnAgregar.setEnabled(true);
@@ -59,27 +56,24 @@ public class ProductoLista extends AppCompatActivity {
 
 
         //Se crea el adaptador de Categoria y se lo settea al spinner
-        final ArrayAdapter<Categoria> categoriasDeProductoSpinner = new ArrayAdapter<Categoria>(this, android.R.layout.simple_list_item_1,prodRepo.getCategorias());
+        final ArrayAdapter<Categoria> categoriasDeProductoSpinner = new ArrayAdapter<Categoria>(this, android.R.layout.simple_list_item_1,repoProducto.getCategorias());
         final Spinner spinnerDeCategorias = (Spinner) findViewById(R.id.spinnerCategorias);
         spinnerDeCategorias.setAdapter(categoriasDeProductoSpinner);
 
 
        //final String[] datosSpinner = new String[]{"Elem1","Elem2"};
         //Se crea el adapter de Productos y se lo setea al ListView
-        final ArrayAdapter<Producto> adaptadorDeListViewProd = new ArrayAdapter<Producto>(this, android.R.layout.simple_spinner_item,prodRepo.getLista());
+        final ArrayAdapter<Producto> adaptadorDeListViewProd = new ArrayAdapter<Producto>(this, android.R.layout.simple_spinner_item,repoProducto.buscarPorCategoria(repoProducto.getCategorias().get(0)));
         final ListView listViewDeProductos = (ListView) findViewById(R.id.listViewProducto);
         listViewDeProductos.setAdapter(adaptadorDeListViewProd);
-        /*
-        System.out.println(prodRepo.getLista().toString());
-        System.out.println(adaptadorDeListViewProd.getItem(1).toString());
-        Incompleto, si secambia de categoria, se actualiza el listviewAdapter, pero no puedo sacar los viejos sin limpiar todo, sino sigue agregando sin fin
-        */
+
         spinnerDeCategorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               // adaptadorDeListViewProd.clear();
-                adaptadorDeListViewProd.addAll(prodRepo.buscarPorCategoria(prodRepo.getCategorias().get(position)));
+
+                adaptadorDeListViewProd.addAll(repoProducto.buscarPorCategoria(repoProducto.getCategorias().get(position)));
                 listViewDeProductos.setAdapter(adaptadorDeListViewProd);
+
             }
 
             @Override
@@ -89,11 +83,22 @@ public class ProductoLista extends AppCompatActivity {
         });
 
         //Si se selecciona un producto, se remueve de la lista, falta agregar a un nuevo pedido este producto
+
+        listViewDeProductos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                productoSeleccionado=(Producto) listViewDeProductos.getItemAtPosition(position);
+                adaptadorDeListViewProd.remove((Producto) listViewDeProductos.getItemAtPosition(position));
+                listViewDeProductos.setAdapter(adaptadorDeListViewProd);
+            }
+        });
+
+
         listViewDeProductos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {//
-                adaptadorDeListViewProd.remove((Producto) listViewDeProductos.getSelectedItem());
-                listViewDeProductos.setAdapter(adaptadorDeListViewProd);
+
+
             }
 
             @Override
@@ -107,11 +112,11 @@ public class ProductoLista extends AppCompatActivity {
 
          btnAgregar.setOnClickListener(new View.OnClickListener() {
              @Override
-             public void onClick(View v) {
+             public void onClick(View v) {//agrgar validacion si cantidad es igual a cero, no cancelar
                  Intent i = new Intent(ProductoLista.this,NuevoPedido.class);
-                 Pedido actual = repoPedido.getLista().get(repoPedido.getLista().size()-1);
-                 actual.agregarDetalle(new PedidoDetalle(Integer.getInteger(edtCantidad.getText().toString()), (Producto)listViewDeProductos.getSelectedItem()));
 
+                 actual = repoPedido.getLista().get(repoPedido.getLista().size()-1);
+                 actual.agregarDetalle(new PedidoDetalle(Integer.getInteger(edtCantidad.getText().toString()), productoSeleccionado));
                  startActivity(i);
              }
          });
