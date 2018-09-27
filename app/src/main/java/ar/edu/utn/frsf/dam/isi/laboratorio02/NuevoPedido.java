@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,70 +40,66 @@ public class NuevoPedido extends AppCompatActivity {
     private EditText edtHoraEntrega;
     private Button btnVolver;
     private Button btnEliminar;
-    private  PedidoRepository repoPedido;
+    private PedidoRepository repoPedido;
     private ProductoRepository repoProducto;
-    private Producto nuevoProducto=null;
+    private Producto nuevoProducto = null;
     private PedidoDetalle nuevoDetalle;
     private Pedido nuevoPedido;
-
-
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nuevo_pedido);
-        repoPedido=new PedidoRepository();
-        repoProducto=new ProductoRepository();
+        repoPedido = new PedidoRepository();
+        repoProducto = new ProductoRepository();
+        final ArrayAdapter<PedidoDetalle> adapDetalle;
+        nuevoPedido = new Pedido();
 
-        nuevoPedido=new Pedido();
-        ArrayAdapter<PedidoDetalle> adapDetalle;
 
         rBtnEntregaDomicilio = (RadioButton) findViewById(R.id.radioButtonEntregaDomicilio);
         rBtnRetirEnLocal = (RadioButton) findViewById(R.id.radioButtonRetirEnLocal);
         edtDireccion = (EditText) findViewById(R.id.editTextDireccion);
-        lVPedido= (ListView) findViewById(R.id.listViewPedidoItems);
-        btnPedidoAddProducto=(Button) findViewById(R.id.buttonAgregarProd);
-        edtCorreo=(EditText) findViewById(R.id.editTextPedidoCorreo);
-        edtHoraEntrega=(EditText) findViewById(R.id.editTextHoraEntrega);
-        btnVolver=(Button) findViewById(R.id.buttonPedidoVolver);
+        lVPedido = (ListView) findViewById(R.id.listViewPedidoItems);
+        btnPedidoAddProducto = (Button) findViewById(R.id.buttonAgregarProd);
+        edtCorreo = (EditText) findViewById(R.id.editTextPedidoCorreo);
+        edtHoraEntrega = (EditText) findViewById(R.id.editTextHoraEntrega);
+        btnVolver = (Button) findViewById(R.id.buttonPedidoVolver);
         tVTotalPedido = (TextView) findViewById(R.id.textViewTotalPedido);
         btnHacerPedido = (Button) findViewById(R.id.buttonPedidoRealizar);
         btnEliminar = (Button) findViewById(R.id.buttonQuitarProd);
-        if(repoPedido.getLista().size()!=0)
-        tVTotalPedido.setText( "" + tVTotalPedido.getText().toString() +repoPedido.getLista().get(repoPedido.getLista().size()-1).total().toString());
+        if (repoPedido.getLista().size() != 0)
+            tVTotalPedido.setText("" + tVTotalPedido.getText().toString() + repoPedido.getLista().get(repoPedido.getLista().size() - 1).total().toString());
 
-        if(getIntent().getIntExtra("Desde", 0)==0) {
+        if (getIntent().getIntExtra("Desde", 0) == 0) {
             if (repoPedido.getLista().size() != 0)
-                adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_selectable_list_item, repoPedido.getLista().get(repoPedido.getLista().size() - 1).getDetalle());
+                adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_single_choice, repoPedido.getLista().get(repoPedido.getLista().size() - 1).getDetalle());
             else
-                adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_selectable_list_item, new ArrayList<PedidoDetalle>());
+                adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_single_choice, new ArrayList<PedidoDetalle>());
             lVPedido.setAdapter(adapDetalle);
             btnEliminar.setEnabled(true);
-        }else
-            if(getIntent().getIntExtra("Desde", 0)==1){
-                btnEliminar.setEnabled(false);
-            nuevoPedido = repoPedido.buscarPorId(getIntent().getIntExtra("Id",0));
+        } else if (getIntent().getIntExtra("Desde", 0) == 1) {
+            btnEliminar.setEnabled(false);
+            nuevoPedido = repoPedido.buscarPorId(getIntent().getIntExtra("Id", 0));
             edtCorreo.setText(nuevoPedido.getMailContacto());
             rBtnEntregaDomicilio.setEnabled(false);
             rBtnRetirEnLocal.setEnabled(false);
-            if(!nuevoPedido.getRetirar()) {
+            if (!nuevoPedido.getRetirar()) {
                 rBtnEntregaDomicilio.setChecked(true);
                 edtDireccion.setText(nuevoPedido.getDireccionEnvio());
-            }else rBtnRetirEnLocal.setChecked(true);
+            } else rBtnRetirEnLocal.setChecked(true);
             edtHoraEntrega.setText(nuevoPedido.getFecha().toString());
-            adapDetalle= new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, nuevoPedido.getDetalle());
+            adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, nuevoPedido.getDetalle());
             lVPedido.setAdapter(adapDetalle);
 
-                btnHacerPedido.setEnabled(false);
-                btnPedidoAddProducto.setEnabled(false);
+            btnHacerPedido.setEnabled(false);
+            btnPedidoAddProducto.setEnabled(false);
         }
 
         rBtnEntregaDomicilio.setOnClickListener(new View.OnClickListener() {//cambia el campo direccion de  habilitado a deshabilitad
             @Override
             public void onClick(View v) {
-                 edtDireccion.setEnabled(true);
+                edtDireccion.setEnabled(true);
             }
         });
         rBtnRetirEnLocal.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +113,7 @@ public class NuevoPedido extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(NuevoPedido.this, ProductoLista.class);
                 repoPedido.guardarPedido(nuevoPedido);
-                i.putExtra("NUEVO_PEDIDO",1);
+                i.putExtra("NUEVO_PEDIDO", 1);
                 startActivityForResult(i, 1);
 
             }
@@ -125,17 +122,17 @@ public class NuevoPedido extends AppCompatActivity {
             @Override
             public void onClick(View v) {//se validan los campos
 
-                if(edtDireccion.getText().length()==0 || edtHoraEntrega.getText().length()==0 || edtCorreo.getText().length()==0){
+                if (edtDireccion.getText().length() == 0 || edtHoraEntrega.getText().length() == 0 || edtCorreo.getText().length() == 0) {
                     CharSequence text = "Campos invalidos!";
 
-                    Toast toast = Toast.makeText(getApplicationContext(), text,Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
                     toast.show();
-                }else{// se carga el estado al pedido y se llama a la actividad historial de pedidos
-                    nuevoPedido=repoPedido.getLista().get(repoPedido.getLista().size() - 1);
-                    SimpleDateFormat dateFormat=new SimpleDateFormat("HH:mm");
-                    String horaString=edtHoraEntrega.getText().toString();
+                } else {// se carga el estado al pedido y se llama a la actividad historial de pedidos
+                    nuevoPedido = repoPedido.getLista().get(repoPedido.getLista().size() - 1);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                    String horaString = edtHoraEntrega.getText().toString();
                     try {
-                        java.util.Date hora =dateFormat.parse(horaString);
+                        java.util.Date hora = dateFormat.parse(horaString);
                         nuevoPedido.setFecha(hora);
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -165,5 +162,20 @@ public class NuevoPedido extends AppCompatActivity {
             }
         });
 
+        btnEliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PedidoDetalle aEliminar=((PedidoDetalle) lVPedido.getSelectedItem());
+                nuevoPedido.quitarDetalle(aEliminar);
+
+
+            }
+        });
+        lVPedido.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
     }
 }

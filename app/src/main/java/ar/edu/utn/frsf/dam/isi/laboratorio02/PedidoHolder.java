@@ -29,7 +29,4 @@ public class PedidoHolder extends AppCompatActivity {
         this.btnCancelar=(Button)base.findViewById(R.id.buttonCancelarPedido);
         this.btnVerdetalle=(Button)base.findViewById(R.id.buttonVerDetalle);
     }
-
-
-
 }

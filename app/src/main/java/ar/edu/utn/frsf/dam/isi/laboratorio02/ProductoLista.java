@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.content.Intent;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoRepository;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.ProductoRepository;
@@ -70,9 +71,11 @@ public class ProductoLista extends AppCompatActivity {
         spinnerDeCategorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Categoria catSeleccionada = (Categoria) spinnerDeCategorias.getSelectedItem();
+                List<Producto> prodList= repoProducto.buscarPorCategoria(catSeleccionada);
                 adaptadorDeListViewProd.clear();
-                adaptadorDeListViewProd.addAll(repoProducto.buscarPorCategoria(repoProducto.getCategorias().get(position)));
-                listViewDeProductos.setAdapter(adaptadorDeListViewProd);
+                adaptadorDeListViewProd.addAll(prodList);
+
 
             }
 
