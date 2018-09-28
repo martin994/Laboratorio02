@@ -149,12 +149,49 @@ public class NuevoPedido extends AppCompatActivity {
 
                     //Deberíamos setear los repo y todos los objetos que no esten en los repo
 
-                    startActivity(i);
+                    Runnable r = new Runnable() {
 
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.currentThread().sleep(10000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            // buscar pedidos no aceptados y aceptarlos utomáticamente
+                            List<Pedido> lista = repoPedido.getLista();
+                            for (Pedido p : lista) {
+                                if (p.getEstado().equals(Pedido.Estado.REALIZADO))
+                                    p.setEstado(Pedido.Estado.ACEPTADO);
+
+                            }
+
+                            runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    Toast.makeText(NuevoPedido.this,"Informacion de pedidos actualizada !",
+                                    Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+
+
+                        }
+
+                    };
+
+                    Thread unHilo = new Thread(r);
+                    unHilo.start();
+
+                    startActivity(i);
                 }
             }
         });
-        btnVolver.setOnClickListener(new View.OnClickListener() {
+        btnVolver.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(NuevoPedido.this, MainActivity.class);
@@ -162,16 +199,20 @@ public class NuevoPedido extends AppCompatActivity {
             }
         });
 
-        btnEliminar.setOnClickListener(new View.OnClickListener() {
+        btnEliminar.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
-                PedidoDetalle aEliminar=((PedidoDetalle) lVPedido.getSelectedItem());
+                PedidoDetalle aEliminar = ((PedidoDetalle) lVPedido.getSelectedItem());
                 nuevoPedido.quitarDetalle(aEliminar);
 
 
             }
         });
-        lVPedido.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lVPedido.setOnItemClickListener(new AdapterView.OnItemClickListener()
+
+        {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
