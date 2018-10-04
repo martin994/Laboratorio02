@@ -1,6 +1,9 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -55,6 +58,13 @@ public class NuevoPedido extends AppCompatActivity {
         repoProducto = new ProductoRepository();
         final ArrayAdapter<PedidoDetalle> adapDetalle;
         nuevoPedido = new Pedido();
+
+        BroadcastReceiver br = new EstadoPedidoReciver();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(EstadoPedidoReciver.Evento01);
+        this.registerReceiver(br,filter);
+
+
 
 
         rBtnEntregaDomicilio = (RadioButton) findViewById(R.id.radioButtonEntregaDomicilio);
@@ -164,7 +174,10 @@ public class NuevoPedido extends AppCompatActivity {
                             for (Pedido p : lista) {
                                 if (p.getEstado().equals(Pedido.Estado.REALIZADO))
                                     p.setEstado(Pedido.Estado.ACEPTADO);
-
+                                    Intent broad= new Intent();
+                                    broad.putExtra("id_pedido", p.getId());
+                                    broad.setAction(EstadoPedidoReciver.Evento01);
+                                    sendBroadcast(broad);
                             }
 
                             runOnUiThread(new Runnable() {
