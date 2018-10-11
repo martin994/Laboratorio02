@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1054099566446",
+    "firebase_url": "https://app-de-pedidos-dam.firebaseio.com",
+    "project_id": "app-de-pedidos-dam",
+    "storage_bucket": "app-de-pedidos-dam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054099566446:android:38bf568b58a9777a",
+        "android_client_info": {
+          "package_name": "ar.edu.utn.frsf.dam.isi.laboratorio02"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1054099566446-evqret5sn94h02v1o8m85bg19bs03b9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH_7lk1U-VYJA3RLg3hLNUq1y-iolCTog"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
