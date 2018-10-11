@@ -1,6 +1,12 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +22,7 @@ import android.widget.Toast;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +52,7 @@ public class NuevoPedido extends AppCompatActivity {
     private Producto nuevoProducto = null;
     private PedidoDetalle nuevoDetalle;
     private Pedido nuevoPedido;
+    private CharSequence nombre_canal;
 
 
     @Override
@@ -54,7 +62,18 @@ public class NuevoPedido extends AppCompatActivity {
         repoPedido = new PedidoRepository();
         repoProducto = new ProductoRepository();
         final ArrayAdapter<PedidoDetalle> adapDetalle;
-        nuevoPedido = new Pedido();
+        if(getIntent().hasExtra("Id"))
+            nuevoPedido= repoPedido.buscarPorId(getIntent().getIntExtra("Id",0));
+        else
+            nuevoPedido = new Pedido();
+        DateFormat hourFormat = new SimpleDateFormat("HH:mm");
+
+        BroadcastReceiver br = new EstadoPedidoReciver();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(EstadoPedidoReciver.Evento01);
+        this.registerReceiver(br,filter);
+
+
 
 
         rBtnEntregaDomicilio = (RadioButton) findViewById(R.id.radioButtonEntregaDomicilio);
@@ -69,7 +88,7 @@ public class NuevoPedido extends AppCompatActivity {
         btnHacerPedido = (Button) findViewById(R.id.buttonPedidoRealizar);
         btnEliminar = (Button) findViewById(R.id.buttonQuitarProd);
         if (repoPedido.getLista().size() != 0)
-            tVTotalPedido.setText("" + tVTotalPedido.getText().toString() + repoPedido.getLista().get(repoPedido.getLista().size() - 1).total().toString());
+            tVTotalPedido.setText("" + tVTotalPedido.getText().toString() + ": $" + String.format("%.2f",repoPedido.getLista().get(repoPedido.getLista().size() - 1).total()));
 
         if (getIntent().getIntExtra("Desde", 0) == 0) {
             if (repoPedido.getLista().size() != 0)
@@ -77,8 +96,14 @@ public class NuevoPedido extends AppCompatActivity {
             else
                 adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_single_choice, new ArrayList<PedidoDetalle>());
             lVPedido.setAdapter(adapDetalle);
+            if(nuevoPedido.getFecha()!=null)edtHoraEntrega.setText(""+hourFormat.format(nuevoPedido.getFecha()));
+            if(nuevoPedido.getDireccionEnvio()!=null)edtDireccion.setText(""+nuevoPedido.getDireccionEnvio());
+            if(nuevoPedido.getMailContacto()!=null)edtCorreo.setText(""+nuevoPedido.getMailContacto());
+            if(nuevoPedido.getRetirar())rBtnRetirEnLocal.setChecked(true);
+            else rBtnEntregaDomicilio.setChecked(true);
             btnEliminar.setEnabled(true);
         } else if (getIntent().getIntExtra("Desde", 0) == 1) {
+
             btnEliminar.setEnabled(false);
             nuevoPedido = repoPedido.buscarPorId(getIntent().getIntExtra("Id", 0));
             edtCorreo.setText(nuevoPedido.getMailContacto());
@@ -88,7 +113,7 @@ public class NuevoPedido extends AppCompatActivity {
                 rBtnEntregaDomicilio.setChecked(true);
                 edtDireccion.setText(nuevoPedido.getDireccionEnvio());
             } else rBtnRetirEnLocal.setChecked(true);
-            edtHoraEntrega.setText(nuevoPedido.getFecha().toString());
+            edtHoraEntrega.setText(hourFormat.format(nuevoPedido.getFecha()));
             adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_1, nuevoPedido.getDetalle());
             lVPedido.setAdapter(adapDetalle);
 
@@ -114,6 +139,18 @@ public class NuevoPedido extends AppCompatActivity {
                 Intent i = new Intent(NuevoPedido.this, ProductoLista.class);
                 repoPedido.guardarPedido(nuevoPedido);
                 i.putExtra("NUEVO_PEDIDO", 1);
+                i.putExtra("Id", nuevoPedido.getId());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                String horaString = edtHoraEntrega.getText().toString();
+                try {
+                    java.util.Date hora = dateFormat.parse(horaString);
+                    nuevoPedido.setFecha(hora);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                nuevoPedido.setDireccionEnvio(edtDireccion.getText().toString());
+                nuevoPedido.setMailContacto(edtCorreo.getText().toString());
+                nuevoPedido.setRetirar(rBtnRetirEnLocal.isChecked());
                 startActivityForResult(i, 1);
 
             }
@@ -149,12 +186,56 @@ public class NuevoPedido extends AppCompatActivity {
 
                     //Deberíamos setear los repo y todos los objetos que no esten en los repo
 
-                    startActivity(i);
+                    Runnable r = new Runnable() {
 
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.currentThread().sleep(10000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            // buscar pedidos no aceptados y aceptarlos utomáticamente
+                            List<Pedido> lista = repoPedido.getLista();
+                            for (Pedido p : lista) {
+                                if (p.getEstado().equals(Pedido.Estado.REALIZADO))
+                                    createNotificationChannel();
+                                    p.setEstado(Pedido.Estado.ACEPTADO);
+                                    Intent broad= new Intent();
+                                    broad.putExtra("id_pedido", p.getId());
+                                    //broad.putExtra("Costo", p.total());
+                                    //broad.putExtra("Entrega", p.getFecha());
+                                    broad.setAction(EstadoPedidoReciver.Evento01);
+
+                                    sendBroadcast(broad);
+                            }
+
+                            runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    Toast.makeText(NuevoPedido.this,"Informacion de pedidos actualizada !",
+                                    Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+
+
+                        }
+
+                    };
+
+                    Thread unHilo = new Thread(r);
+                    unHilo.start();
+
+                    startActivity(i);
                 }
             }
         });
-        btnVolver.setOnClickListener(new View.OnClickListener() {
+        btnVolver.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(NuevoPedido.this, MainActivity.class);
@@ -162,20 +243,39 @@ public class NuevoPedido extends AppCompatActivity {
             }
         });
 
-        btnEliminar.setOnClickListener(new View.OnClickListener() {
+        btnEliminar.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View v) {
-                PedidoDetalle aEliminar=((PedidoDetalle) lVPedido.getSelectedItem());
+                PedidoDetalle aEliminar = ((PedidoDetalle) lVPedido.getSelectedItem());
                 nuevoPedido.quitarDetalle(aEliminar);
 
 
             }
         });
-        lVPedido.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lVPedido.setOnItemClickListener(new AdapterView.OnItemClickListener()
+
+        {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             }
         });
+    }
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                CharSequence name = nombre_canal;
+                String description = "descripcion del canal";
+                int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                NotificationChannel channel = new NotificationChannel("Canal1", name, importance);
+                channel.setDescription(description);
+
+                NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                notificationManager.createNotificationChannel(channel);
+
+            }
+        }
     }
 }

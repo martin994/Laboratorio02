@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class PedidosAdapter extends ArrayAdapter {
 
     private Context ctx;
     private List<Pedido> datos;
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
 
     public PedidosAdapter(Context context, List<Pedido> listaDePedidos) {
         super(context, 0, listaDePedidos);
@@ -46,41 +47,49 @@ public class PedidosAdapter extends ArrayAdapter {
 
 
         Pedido unPedido = (Pedido) super.getItem(position);
-
+        DateFormat hourFormat = new SimpleDateFormat("HH:mm");
         holder.tvMailPedido.setText(unPedido.getMailContacto());
-        holder.tvHoraDeEntrega.setText("Fecha:" + sdf.format(unPedido.getFecha()));
+        holder.tvHoraDeEntrega.setText("Hora de entrega: " +hourFormat.format(unPedido.getFecha()));
         holder.btnCancelar.setTag(position);
         holder.btnVerdetalle.setTag(position);
         for (PedidoDetalle i : unPedido.getDetalle()) {
             cantidadUnPedido += i.getCantidad();
         }
-        holder.tvCantidadDeItems.setText(""+cantidadUnPedido);
+        holder.tvCantidadDeItems.setText("Cantidad: "+cantidadUnPedido);
 
-        holder.tvPrecio.setText(unPedido.total().toString());
+        holder.tvPrecio.setText("Costo: $" + String.format("%.2f",unPedido.total()));
 
         switch (unPedido.getEstado()) {
             case LISTO:
                 holder.estado.setTextColor(Color.DKGRAY);
+                holder.estado.setText("Listo");
+
                 break;
             case ENTREGADO:
                 holder.estado.setTextColor(Color.BLUE);
+                holder.estado.setText("Entregado");
                 break;
             case CANCELADO:
             case RECHAZADO:
                 holder.estado.setTextColor(Color.RED);
+                holder.estado.setText("Rechazado");
                 break;
             case ACEPTADO:
                 holder.estado.setTextColor(Color.GREEN);
+                holder.estado.setText("Aceptado");
                 break;
             case EN_PREPARACION:
                 holder.estado.setTextColor(Color.MAGENTA);
+                holder.estado.setText("En preparación");
                 break;
             case REALIZADO:
                 holder.estado.setTextColor(Color.BLUE);
+                holder.estado.setText("Realizado");
                 break;
 
 
         }
+
 
         if (unPedido.getRetirar()) {
             holder.tipoEntrega.setImageResource(R.drawable.domicilio);

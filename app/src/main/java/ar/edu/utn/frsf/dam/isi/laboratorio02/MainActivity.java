@@ -1,6 +1,9 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,22 +28,23 @@ public class MainActivity extends AppCompatActivity {
     private Button btnHistorial;
     private Button btnListaProductos;
     private ProductoRepository repositorioProductos;
-    private PedidoRepository repoPedido= null;
-    private Pedido nuevo=null;
+    private PedidoRepository repoPedido = null;
+    private Pedido nuevo = null;
     private ProductoRepository repoProducto;
+    private CharSequence nombre_canal;
 
-        @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
         setContentView(R.layout.activity_main);//se seleccionan las 3 opciones podibles en la pantalla principal
 
-                repoPedido=new PedidoRepository();
-                repoProducto=new ProductoRepository();
+        repoPedido = new PedidoRepository();
+        repoProducto = new ProductoRepository();
 
-            btnMainNuevoPedido = (Button) findViewById(R.id.btnMainNuevoPedido);
-            btnMainNuevoPedido.setOnClickListener(new View.OnClickListener() {
+        btnMainNuevoPedido = (Button) findViewById(R.id.btnMainNuevoPedido);
+        btnMainNuevoPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, NuevoPedido.class);
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         btnHistorial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this,HistorialPedidos.class);
+                Intent i = new Intent(MainActivity.this, HistorialPedidos.class);
                 startActivity(i);
             }
         });
@@ -64,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(MainActivity.this,ProductoLista.class);
-                i.putExtra("NUEVO_PEDIDO",0);
+                Intent i = new Intent(MainActivity.this, ProductoLista.class);
+                i.putExtra("NUEVO_PEDIDO", 0);
                 //for(Producto p: repositorioProductos.getLista())
                 //i.putExtra(p.getNombre(),p.getId().toString());
                 startActivity(i);
@@ -73,4 +77,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
