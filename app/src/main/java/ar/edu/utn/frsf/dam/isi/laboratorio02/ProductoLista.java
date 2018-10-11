@@ -124,6 +124,7 @@ public class ProductoLista extends AppCompatActivity {
                  actual.agregarDetalle(nuevoDetalle);
                  //repoPedido.getLista().(repoPedido.getLista().size()-1)
                 i.putExtra("Desde", 0);
+                i.putExtra("Id", getIntent().getIntExtra("Id", 0));
                  startActivity(i);
              }
          });

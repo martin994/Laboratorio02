@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textEmailAddress" />
 
     <TextView
         android:id="@+id/textViewModoEntrega"
@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="text|textCapSentences" />
 
     <TextView
         android:id="@+id/textViewHoraEntrega"
@@ -76,7 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="time" />
 
     <ListView
         android:id="@+id/listViewPedidoItems"

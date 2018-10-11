@@ -42,7 +42,7 @@
         android:ems="10"
         android:enabled="false"
         android:focusable="auto"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:text="@string/edtCantidadAPedir" />
 
     <Button

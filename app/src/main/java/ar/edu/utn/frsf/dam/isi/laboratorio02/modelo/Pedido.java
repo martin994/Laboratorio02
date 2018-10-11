@@ -15,7 +15,7 @@ public class Pedido implements Serializable{
     private Estado estado;
     private String direccionEnvio;
     private String mailContacto;
-    private Boolean retirar;
+    private Boolean retirar=false;
 
     public String getDireccionEnvio() {
         return direccionEnvio;
