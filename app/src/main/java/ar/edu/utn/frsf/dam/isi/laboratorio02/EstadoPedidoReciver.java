@@ -25,25 +25,36 @@ public class EstadoPedidoReciver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         //if(intent.getAction().toString()==Evento01)
         //    Toast.makeText(context, "=>"+"Estado aceptado.", Toast.LENGTH_LONG).show();
-        if(intent.hasExtra("id_pedido")) {
-            PedidoRepository repoPedido= new PedidoRepository();
-            Pedido p = repoPedido.buscarPorId(intent.getExtras().getInt("id_producto"));
-            DateFormat hourFormat = new SimpleDateFormat("HH:mm");
-            Intent destino =new Intent(context, NuevoPedido.class);
-            destino.putExtra("Desde", 1);
-            destino.putExtra("Id" , p.getId());
-            destino.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            PendingIntent pendingIntent= PendingIntent.getActivity(context,0, destino,0);
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "Canal1")
-                    .setContentTitle("Pedido Realizado")
-                    .setSmallIcon(R.drawable.domicilio)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText("El costo sera: $" + String.format("%.2f",p.total()) +"\nSe entrega a las: "+hourFormat.format(p.getFecha())))
-                    .setPriority((NotificationCompat.PRIORITY_DEFAULT))
-                    .setContentIntent(pendingIntent);
+        switch (intent.getAction().toString()){
+            case Evento01:
+                if(intent.hasExtra("id_pedido")) {
+                    PedidoRepository repoPedido = new PedidoRepository();
+                    Pedido p = repoPedido.buscarPorId(intent.getExtras().getInt("id_producto"));
+                    DateFormat hourFormat = new SimpleDateFormat("HH:mm");
+                    Intent destino = new Intent(context, NuevoPedido.class);
+                    destino.putExtra("Desde", 1);
+                    destino.putExtra("Id", p.getId());
+                    destino.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, destino, 0);
+                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "Canal1")
+                            .setContentTitle("Pedido Realizado")
+                            .setSmallIcon(R.drawable.domicilio)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText("El costo sera: $" + String.format("%.2f", p.total()) + "\nSe entrega a las: " + hourFormat.format(p.getFecha())))
+                            .setPriority((NotificationCompat.PRIORITY_DEFAULT))
+                            .setContentIntent(pendingIntent);
 
 
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            notificationManager.notify(99, mBuilder.build());
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                    notificationManager.notify(99, mBuilder.build());
+
+
+                }
+                    break;
+            case Evento03:
+
+
+
+                break;
         }
     }
 }
