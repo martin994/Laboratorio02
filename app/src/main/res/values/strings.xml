@@ -32,4 +32,5 @@
     <string name="lblEstado">Estado</string>
     <string name="lblCancelar">Cancelar</string>
     <string name="lblVerDetalle">Ver detalles</string>
+    <string name="lblPrepararPedido">Preparar pedido</string>
 </resources>
