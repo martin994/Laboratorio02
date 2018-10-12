@@ -15,6 +15,7 @@ public class HistorialPedidos extends AppCompatActivity {
     private PedidoRepository repoPedido;
     private ListView listaPedidosPersonalizada;
     private Button btnMenu;
+    private Button btnNuevo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -30,6 +31,15 @@ public class HistorialPedidos extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(HistorialPedidos.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
+        btnNuevo=(Button) findViewById(R.id.btnHistorialNuevo);
+        btnNuevo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HistorialPedidos.this, NuevoPedido.class);
+                i.putExtra("NUEVO_PEDIDO", 0);
                 startActivity(i);
             }
         });

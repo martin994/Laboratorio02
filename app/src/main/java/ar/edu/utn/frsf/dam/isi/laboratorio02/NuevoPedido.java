@@ -62,7 +62,7 @@ public class NuevoPedido extends AppCompatActivity {
         repoPedido = new PedidoRepository();
         repoProducto = new ProductoRepository();
         final ArrayAdapter<PedidoDetalle> adapDetalle;
-        if(getIntent().hasExtra("Id"))
+        if(getIntent().hasExtra("Id"))  // controlo si el usuario cargo datos en una instancia anterior
             nuevoPedido= repoPedido.buscarPorId(getIntent().getIntExtra("Id",0));
         else
             nuevoPedido = new Pedido();
@@ -74,7 +74,7 @@ public class NuevoPedido extends AppCompatActivity {
         this.registerReceiver(br,filter);
 
 
-
+    //defino los componentes de la actividad
 
         rBtnEntregaDomicilio = (RadioButton) findViewById(R.id.radioButtonEntregaDomicilio);
         rBtnRetirEnLocal = (RadioButton) findViewById(R.id.radioButtonRetirEnLocal);
@@ -87,9 +87,12 @@ public class NuevoPedido extends AppCompatActivity {
         tVTotalPedido = (TextView) findViewById(R.id.textViewTotalPedido);
         btnHacerPedido = (Button) findViewById(R.id.buttonPedidoRealizar);
         btnEliminar = (Button) findViewById(R.id.buttonQuitarProd);
+
+        //si existe el pedido calcula el costo y lo carga en el lbl
         if (repoPedido.getLista().size() != 0)
             tVTotalPedido.setText("" + tVTotalPedido.getText().toString() + ": $" + String.format("%.2f",repoPedido.getLista().get(repoPedido.getLista().size() - 1).total()));
 
+        //Si la actividad que nos instancio quiere crear un Pedido, la clave Dsde vale 0, si quiere mostrar datos, vale 1
         if (getIntent().getIntExtra("Desde", 0) == 0) {
             if (repoPedido.getLista().size() != 0)
                 adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_single_choice, repoPedido.getLista().get(repoPedido.getLista().size() - 1).getDetalle());
@@ -133,6 +136,7 @@ public class NuevoPedido extends AppCompatActivity {
                 edtDireccion.setEnabled(false);
             }
         });
+        // Nos dirije a la actividad que nos permita seleccionar nuevos pedidos
         btnPedidoAddProducto.setOnClickListener(new View.OnClickListener() {//
             @Override
             public void onClick(View v) {
@@ -155,11 +159,13 @@ public class NuevoPedido extends AppCompatActivity {
 
             }
         });
+        //controla si los campos son validos, si lo son pasa a una actividad que muestra la lista de pedidos
         btnHacerPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//se validan los campos
 
-                if (edtDireccion.getText().length() == 0 || edtHoraEntrega.getText().length() == 0 || edtCorreo.getText().length() == 0) {
+                if ( (edtDireccion.getText().length() == 0 && rBtnEntregaDomicilio.isChecked()) ||   edtHoraEntrega.getText().length() == 0 || edtCorreo.getText().length() == 0){
+
                     CharSequence text = "Campos invalidos!";
 
                     Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
@@ -233,16 +239,18 @@ public class NuevoPedido extends AppCompatActivity {
                 }
             }
         });
+        //volvemos al menu principal, se elimina el pedido
         btnVolver.setOnClickListener(new View.OnClickListener()
 
         {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(NuevoPedido.this, MainActivity.class);
+                repoPedido.getLista().remove(nuevoPedido);
                 startActivity(i);
             }
         });
-
+        //comentar despues, no me acuerdo de esta funcionalidad
         btnEliminar.setOnClickListener(new View.OnClickListener()
 
         {
@@ -254,12 +262,13 @@ public class NuevoPedido extends AppCompatActivity {
 
             }
         });
+
         lVPedido.setOnItemClickListener(new AdapterView.OnItemClickListener()
 
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                lVPedido.setItemChecked(position, true);
             }
         });
     }
