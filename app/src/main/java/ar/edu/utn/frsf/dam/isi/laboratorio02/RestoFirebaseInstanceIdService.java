@@ -12,7 +12,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
 public class RestoFirebaseInstanceIdService extends FirebaseInstanceIdService {
-    private static final String TAG = "RestoFirebaseInstanceIdService";
+    public static final String TAG = "RestoFirebaseInstanceIdService";
     public RestoFirebaseInstanceIdService() {
     }
     @SuppressLint("LongLogTag")
@@ -32,8 +32,8 @@ public class RestoFirebaseInstanceIdService extends FirebaseInstanceIdService {
         editor.putString("registration_id", _token);
         editor.apply();
     }
-    private String leerToken(){
+    /*private String leerToken(){
         SharedPreferences preferences =PreferenceManager.getDefaultSharedPreferences(this);
         return preferences.getString("registration_id",null);
-    }
+    }*/
 }
