@@ -21,6 +21,8 @@ public class EstadoPedidoReciver extends BroadcastReceiver {
     public static final String Evento03="ar.edu.utn.frsf.dam.isi.laboratorio02.ESTADO_EN_PREPARACION";
     public static final String Evento04="ar.edu.utn.frsf.dam.isi.laboratorio02.ESTADO_LISTO";
     private NotificationCompat.Builder mBuilder;
+    private PedidoRepository repoPedido=null;
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -29,7 +31,7 @@ public class EstadoPedidoReciver extends BroadcastReceiver {
         switch (intent.getAction().toString()){
             case Evento01:
                 if(intent.hasExtra("id_pedido")) {
-                    PedidoRepository repoPedido = new PedidoRepository();
+                    repoPedido = new PedidoRepository();
                     Pedido p = repoPedido.buscarPorId(intent.getExtras().getInt("id_producto"));
                     DateFormat hourFormat = new SimpleDateFormat("HH:mm");
                     Intent destino = new Intent(context, NuevoPedido.class);
@@ -53,7 +55,7 @@ public class EstadoPedidoReciver extends BroadcastReceiver {
                     break;
             case Evento03:
                 if(intent.hasExtra("id_pedido")) {
-                    PedidoRepository repoPedido = new PedidoRepository();
+                    repoPedido = new PedidoRepository();
                     Pedido p = repoPedido.buscarPorId(intent.getExtras().getInt("id_producto"));
                     DateFormat hourFormat = new SimpleDateFormat("HH:mm");
                     Intent destino = new Intent(context, HistorialPedidos.class);
@@ -76,6 +78,31 @@ public class EstadoPedidoReciver extends BroadcastReceiver {
                 }
 
 
+
+                break;
+            case Evento04:
+                if(intent.hasExtra("id_pedido")) {
+                    repoPedido = new PedidoRepository();
+                    Pedido p = repoPedido.buscarPorId(intent.getExtras().getInt("id_producto"));
+                    DateFormat hourFormat = new SimpleDateFormat("HH:mm");
+                    Intent destino = new Intent(context, HistorialPedidos.class);
+                    destino.putExtra("Desde", 1);
+                    destino.putExtra("Id", p.getId());
+                    destino.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, destino, 0);
+                    mBuilder= new NotificationCompat.Builder(context, "Canal1")
+                            .setContentTitle("Pedido listo")
+                            .setSmallIcon(R.drawable.domicilio)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText("El costo sera: $" + String.format("%.2f", p.total()) ))
+                            .setPriority((NotificationCompat.PRIORITY_DEFAULT))
+                            .setContentIntent(pendingIntent);
+
+
+                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                    notificationManager.notify(99, mBuilder.build());
+
+
+                }
                 break;
         }
     }
