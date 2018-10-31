@@ -39,9 +39,16 @@
         android:text="@string/lblPrepararPedido" />
 
     <Button
+
         android:id="@+id/buttonCategorias"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Categoria" />
+    <Button
+        android:id="@+id/btnConfiguracion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lblConfiguracion" />
+
 
 </LinearLayout>

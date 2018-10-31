@@ -33,4 +33,7 @@
     <string name="lblCancelar">Cancelar</string>
     <string name="lblVerDetalle">Ver detalles</string>
     <string name="lblPrepararPedido">Preparar pedido</string>
+    <string name="lblRetirarPorDefecto">Retirar por defecto</string>
+    <string name="lblCorreoElectronico">Correo Electrónico</string>
+    <string name="lblConfiguracion">Configuración</string>
 </resources>

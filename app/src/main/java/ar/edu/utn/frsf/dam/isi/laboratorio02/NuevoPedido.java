@@ -3,10 +3,13 @@ package ar.edu.utn.frsf.dam.isi.laboratorio02;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -53,6 +56,7 @@ public class NuevoPedido extends AppCompatActivity {
     private PedidoDetalle nuevoDetalle;
     private Pedido nuevoPedido;
     private CharSequence nombre_canal;
+    private SharedPreferences preferencia;
 
 
     @Override
@@ -62,6 +66,7 @@ public class NuevoPedido extends AppCompatActivity {
         repoPedido = new PedidoRepository();
         repoProducto = new ProductoRepository();
         final ArrayAdapter<PedidoDetalle> adapDetalle;
+        preferencia= PreferenceManager.getDefaultSharedPreferences(NuevoPedido.this);
         if(getIntent().hasExtra("Id"))  // controlo si el usuario cargo datos en una instancia anterior
             nuevoPedido= repoPedido.buscarPorId(getIntent().getIntExtra("Id",0));
         else
@@ -99,11 +104,24 @@ public class NuevoPedido extends AppCompatActivity {
             else
                 adapDetalle = new ArrayAdapter<PedidoDetalle>(this, android.R.layout.simple_list_item_single_choice, new ArrayList<PedidoDetalle>());
             lVPedido.setAdapter(adapDetalle);
+
+            if(preferencia.getString("edit_text_preference_1", null)!= null){
+                edtCorreo.setText(preferencia.getString("edit_text_preference_1", null));
+            }else if(nuevoPedido.getMailContacto()!=null){
+                edtCorreo.setText(nuevoPedido.getMailContacto());
+            }
+            if(preferencia.getBoolean("checkbox_preference_1", false)){
+                rBtnRetirEnLocal.setChecked(true);
+            }else{
+                rBtnEntregaDomicilio.setChecked(true);
+            }
+
             if(nuevoPedido.getFecha()!=null)edtHoraEntrega.setText(""+hourFormat.format(nuevoPedido.getFecha()));
             if(nuevoPedido.getDireccionEnvio()!=null)edtDireccion.setText(""+nuevoPedido.getDireccionEnvio());
-            if(nuevoPedido.getMailContacto()!=null)edtCorreo.setText(""+nuevoPedido.getMailContacto());
-            if(nuevoPedido.getRetirar())rBtnRetirEnLocal.setChecked(true);
-            else rBtnEntregaDomicilio.setChecked(true);
+           // if(nuevoPedido.getMailContacto()!=null)edtCorreo.setText(""+nuevoPedido.getMailContacto());
+
+
+
             btnEliminar.setEnabled(true);
         } else if (getIntent().getIntExtra("Desde", 0) == 1) {
 
