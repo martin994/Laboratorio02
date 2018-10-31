@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnHistorial;
     private Button btnListaProductos;
     private Button btnPrepararPedido;
+    private Button  btnCrearCategoria;
     private ProductoRepository repositorioProductos;
     private PedidoRepository repoPedido = null;
     private Pedido nuevo = null;
@@ -85,6 +86,16 @@ public class MainActivity extends AppCompatActivity {
                 startService(intent);
             }
         });
+
+        btnCrearCategoria= (Button) findViewById(R.id.buttonCategorias);
+        btnCrearCategoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this,CategoriaActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 
 
