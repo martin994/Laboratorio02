@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".GestionProducto">
+
+    <ToggleButton
+        android:id="@+id/toggleButtonCrearOActualizar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ToggleButton"
+        android:textOff="@string/tbCrearProductoNuevo"
+        android:textOn="@string/tbBuscar" />
+
+    <TextView
+        android:id="@+id/textViewBuscarPorID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lblBuscar" />
+
+    <EditText
+        android:id="@+id/editTextBuscarProdID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:editable="false"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/buttonBuscar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btnBuscarProdcuto" />
+
+    <TextView
+        android:id="@+id/textViewProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:text="@string/lblDatosProducto" />
+
+    <TextView
+        android:id="@+id/textViewNombreProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lblProductoNombre" />
+
+    <EditText
+        android:id="@+id/editTextNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:editable="false"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textViewDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lblProductoDescripcion" />
+
+    <EditText
+        android:id="@+id/editTextDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:editable="false"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textViewPrecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lblProductoPrecio" />
+
+    <EditText
+        android:id="@+id/editTextPrecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:editable="false"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textViewProductoCategoria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lblProductoCategoria" />
+
+    <Spinner
+        android:id="@+id/spinnerProducto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/buttonProductoGuardar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btnProductoGuarda" />
+
+    <Button
+        android:id="@+id/buttonProductoBorrar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btnProductoBorrar" />
+
+    <Button
+        android:id="@+id/buttonProductoVolver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btnProductoVolver" />
+</LinearLayout>
