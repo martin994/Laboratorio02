@@ -68,7 +68,7 @@ public class CategoriaActivity extends AppCompatActivity {
                     Thread nuevoHilo = new Thread(r);
                     nuevoHilo.start();
 
-                    //json-server --host 10.15.155.236 C:\Users\Usuario\Downloads\resto-blank.json
+                    //json-server --host 192.168.0.100 C:\Users\Usuario\Downloads\resto-blank.json
                     //vuelvo a al MainActivity cuando toco el bonton volver
                     btnMenu= (Button) findViewById(R.id.buttonVolver);
 
