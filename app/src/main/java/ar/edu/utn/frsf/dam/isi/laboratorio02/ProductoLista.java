@@ -12,7 +12,9 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.content.Intent;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.PedidoRepository;
@@ -50,6 +52,8 @@ public class ProductoLista extends AppCompatActivity {
         edtCantidad = (EditText) findViewById(R.id.editTextCantidad);
         btnAgregar = (Button) findViewById(R.id.buttonAgregar);
 
+
+
         if((this.getIntent().getExtras().getInt("NUEVO_PEDIDO"))==1){//Si se solicita un nuevo pedido se habilitan los campos cantidad y el boton agregar punto 2.f
             edtCantidad.setEnabled(true);
             btnAgregar.setEnabled(true);
@@ -57,16 +61,71 @@ public class ProductoLista extends AppCompatActivity {
 
 
         //Se crea el adaptador de Categoria y se lo settea al spinner
-        final ArrayAdapter<Categoria> categoriasDeProductoSpinner = new ArrayAdapter<Categoria>(this, android.R.layout.simple_list_item_1,repoProducto.getCategorias());
-        final Spinner spinnerDeCategorias = (Spinner) findViewById(R.id.spinnerCategorias);
-        spinnerDeCategorias.setAdapter(categoriasDeProductoSpinner);
+        //final ArrayAdapter<Categoria> categoriasDeProductoSpinner = new ArrayAdapter<Categoria>(this, android.R.layout.simple_list_item_1,repoProducto.getCategorias());
+        //final Spinner spinnerDeCategorias = (Spinner) findViewById(R.id.spinnerCategorias);
+        //spinnerDeCategorias.setAdapter(categoriasDeProductoSpinner);
 
 
-       //final String[] datosSpinner = new String[]{"Elem1","Elem2"};
+        //Aca empiezo el requerimiento 3
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                //Creo una instancia de categoriasRest para poder traer la lista de categorias
+                Categoriarest castRes= new Categoriarest();
+
+                final List<Categoria>cats =castRes.listarTodas();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                         ArrayAdapter<Categoria> categoriasDeProductoSpinner = new ArrayAdapter<>(ProductoLista.this, android.R.layout.simple_list_item_1,cats);
+                        Spinner spinnerDeCategorias = (Spinner) findViewById(R.id.spinnerCategorias);
+                        spinnerDeCategorias.setAdapter(categoriasDeProductoSpinner);
+                        spinnerDeCategorias.setSelection(0);
+                        final ArrayAdapter<Producto> adaptadorDeListViewProd = new ArrayAdapter<Producto>(ProductoLista.this, android.R.layout.simple_spinner_item,repoProducto.buscarPorCategoria(repoProducto.getCategorias().get(0)));
+                        ListView listViewDeProductos = (ListView) findViewById(R.id.listViewProducto);
+                        listViewDeProductos.setAdapter(adaptadorDeListViewProd);
+
+
+                        spinnerDeCategorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                 adaptadorDeListViewProd.addAll(repoProducto.buscarPorCategoria((Categoria)parent.getItemAtPosition(position)));
+                                adaptadorDeListViewProd.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+
+
+
+                        });
+                         final ArrayAdapter<Producto> adaptadorDeListViewProd2= new ArrayAdapter<Producto>(ProductoLista.this,android.R.layout.simple_dropdown_item_1line,repoProducto.buscarPorCategoria(repoProducto.getCategorias().get(0)));
+                        listViewDeProductos=(ListView) findViewById(R.id.listViewProducto);
+                        listViewDeProductos.setAdapter(adaptadorDeListViewProd2);
+                    }
+                });
+
+
+            }
+
+
+
+        };
+
+        Thread hiloCargarCombo = new Thread(r);
+        hiloCargarCombo.start();
+
+
+        //final String[] datosSpinner = new String[]{"Elem1","Elem2"};
         //Se crea el adapter de Productos y se lo setea al ListView
-        final ArrayAdapter<Producto> adaptadorDeListViewProd = new ArrayAdapter<Producto>(this, android.R.layout.simple_spinner_item,repoProducto.buscarPorCategoria(repoProducto.getCategorias().get(0)));
+        /*final ArrayAdapter<Producto> adaptadorDeListViewProd = new ArrayAdapter<Producto>(this, android.R.layout.simple_spinner_item,repoProducto.buscarPorCategoria(repoProducto.getCategorias().get(0)));
         final ListView listViewDeProductos = (ListView) findViewById(R.id.listViewProducto);
         listViewDeProductos.setAdapter(adaptadorDeListViewProd);
+
 
         spinnerDeCategorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -83,7 +142,7 @@ public class ProductoLista extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        })
 
         //Si se selecciona un producto, se remueve de la lista, falta agregar a un nuevo pedido este producto
 
@@ -108,7 +167,7 @@ public class ProductoLista extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
 
 
         //incompleto, se debería devolver una bandera para que el MainActivity sepa quien lo creo y un nuevo Pedido
@@ -128,6 +187,7 @@ public class ProductoLista extends AppCompatActivity {
                  startActivity(i);
              }
          });
+
 
 
 
