@@ -36,4 +36,22 @@
     <string name="lblRetirarPorDefecto">Retirar por defecto</string>
     <string name="lblCorreoElectronico">Correo Electrónico</string>
     <string name="lblConfiguracion">Configuración</string>
+
+    <!--- Un Strings activity_guardar_producto -->
+    <string name="tbCrearProductoNuevo">CREAR PRODUCTO NUEVO</string>
+    <string name="tbBuscar">ACTUALIZAR</string>
+    <string name="lblBuscar">Buscar por id</string>
+    <string name="btnBuscarProdcuto">BUSCAR POR ID...</string>
+    <string name="lblDatosProducto">Datos del producto</string>
+    <string name="lblProductoNombre">Nombre</string>
+    <string name="lblProductoDescripcion">Descripción</string>
+    <string name="lblProductoPrecio">Precio</string>
+    <string name="lblProductoCategoria">Categoría</string>
+    <string name="btnProductoGuarda">GUARDAR</string>
+    <string name="btnProductoBorrar">BORRAR</string>
+    <string name="btnProductoVolver">VOLVER</string>
+
+    <!--- Botones de activity_main -->
+    <string name="btnMainCrearActualizarProd"> Crear o actualizar producto</string>
+
 </resources>

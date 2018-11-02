@@ -50,11 +50,9 @@
             </intent-filter>
         </service>
 
-
-        <activity android:name=".CategoriaActivity"></activity>
-
-        <activity android:name=".ConfiguracionActivity"></activity>
-
+        <activity android:name=".CategoriaActivity" />
+        <activity android:name=".ConfiguracionActivity" />
+        <activity android:name=".GestionProducto"></activity>
     </application>
 
 </manifest>
