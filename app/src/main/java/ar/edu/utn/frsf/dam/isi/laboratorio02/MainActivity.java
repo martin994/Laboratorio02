@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnHistorial;
     private Button btnListaProductos;
     private Button btnPrepararPedido;
-
+    private Button btnCrearActualizarProd;
     private Button  btnCrearCategoria;
 
     private Button btnConfiguracion;
@@ -107,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, ConfiguracionActivity.class);
+                startActivity(i);
+            }
+        });
+        btnCrearActualizarProd=(Button) findViewById(R.id.btnCrearActualizar);
+        btnCrearActualizarProd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, GestionProducto.class);
                 startActivity(i);
             }
         });
