@@ -1,12 +1,16 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02.modelo;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.io.Serializable;
-
+@Entity
 public class PedidoDetalle implements Serializable{
-
+    @PrimaryKey
     private static int ID_DETALLE =1;
     private Integer id;
     private Integer cantidad;
+
     private Producto producto;
     private Pedido pedido;
 
