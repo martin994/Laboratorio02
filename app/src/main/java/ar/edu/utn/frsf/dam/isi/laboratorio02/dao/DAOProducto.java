@@ -17,9 +17,11 @@ public interface DAOProducto {
     @Insert
     long insert(Producto p);
     @Update
-    int update(Producto p);
+    int update(Producto id);
     @Delete
-    void delete(Producto p);
+    void delete(Producto id);
+    @Query("SELECT * FROM Producto WHERE id=:idProd")
+    List<Producto> buscarPorId(long idProd);
 
 
 }

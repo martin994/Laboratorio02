@@ -20,6 +20,7 @@ public class MyDataBase {
 
     private Gestor db;
     private DAOCategoria daoCategoria;
+    private DAOProducto daoProducto;
 
     // constructor privado para poder implementar SINGLETON
     // al ser privado solo puede ser invocado dentro de esta clase
@@ -33,9 +34,10 @@ public class MyDataBase {
                 .fallbackToDestructiveMigration()
                 .build();
         daoCategoria = db.daoCategoria();
-
+        daoProducto = db.daoProducto();
     }
     public DAOCategoria getCategoriaDao() {
         return daoCategoria;
     }
+    public DAOProducto getProductoDao() {  return daoProducto;  }
 }

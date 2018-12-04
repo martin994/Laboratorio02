@@ -35,7 +35,7 @@ public class Producto{
         this.categoria = categoria;
     }
     @Ignore
-    public Producto(Integer id, String nombre, String descripcion, Double precio, Categoria categoria) {
+    public Producto(long id, String nombre, String descripcion, Double precio, Categoria categoria) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -86,7 +86,9 @@ public class Producto{
 
     @Override
     public String toString() {
-        return nombre+ "( $" + precio +")";
+        return "Producto : "+nombre+ "( $" + precio +
+                ")\n "+categoria.toString()+
+                "\n Descripción: "+ descripcion;
 
     }
 
