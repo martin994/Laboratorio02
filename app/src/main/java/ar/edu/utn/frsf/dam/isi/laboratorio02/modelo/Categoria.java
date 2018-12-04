@@ -1,14 +1,17 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02.modelo;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
 import java.util.Objects;
 @Entity
-public class Categoria implements Serializable {
+public class Categoria {
     @PrimaryKey(autoGenerate = true)
-    private Integer id;
+    private long id;
+    @ColumnInfo(name = "nombre")
     private String nombre;
 
     public Categoria(Integer id, String nombre) {
@@ -23,11 +26,11 @@ public class Categoria implements Serializable {
     public Categoria() {
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 

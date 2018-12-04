@@ -13,8 +13,8 @@ public class MyDataBase {
     // si no existe, cosa que ocurre la primera vez que se invoca
     // la crea, y si existe retorna la instancia existente.
 
-    public static MyDatabase getInstance(Context ctx){
-        if(_INSTANCIA_UNICA==null) _INSTANCIA_UNICA = new MyDatabase(ctx);
+    public static MyDataBase getInstance(Context ctx){
+        if(_INSTANCIA_UNICA==null) _INSTANCIA_UNICA = new MyDataBase(ctx);
         return _INSTANCIA_UNICA;
     }
 
@@ -27,15 +27,15 @@ public class MyDataBase {
     // y se invocará UNA Y SOLO UNA VEZ, cuando _INSTANCIA_UNICA sea null
     // luego ya no se invoca nunca más. Nos aseguramos de que haya una
     // sola instancia en toda la aplicacion
-    private MyDatabase(Context ctx){
+    private MyDataBase(Context ctx){
         db = Room.databaseBuilder(ctx,
-                daoCategoria.class, "database-name")
+                Gestor.class, "DBLab04B")
                 .fallbackToDestructiveMigration()
                 .build();
         daoCategoria = db.daoCategoria();
 
     }
-    public Categoria getDepartamentoDao() {
+    public DAOCategoria getCategoriaDao() {
         return daoCategoria;
     }
 }

@@ -46,7 +46,7 @@ public class ProductoRepository implements Serializable {
 
     public Producto buscarPorId(Integer id){
         for(Producto p: LISTA_PRODUCTOS){
-            if(p.getId().equals(id)) return p;
+            if(p.getId()==id) return p;
         }
         return null;
     }
@@ -54,7 +54,7 @@ public class ProductoRepository implements Serializable {
     public List<Producto> buscarPorCategoria(Categoria cat){
         List<Producto> resultado = new ArrayList<Producto>();
         for(Producto p:LISTA_PRODUCTOS){
-            if(p.getCategoria().getId().equals(cat.getId())) resultado.add(p);
+            if(p.getCategoria().getId()==cat.getId()) resultado.add(p);
         }
         return resultado;
     }
