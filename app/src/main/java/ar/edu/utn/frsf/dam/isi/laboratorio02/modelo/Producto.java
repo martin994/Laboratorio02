@@ -1,14 +1,25 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02.modelo;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.Objects;
-
-public class Producto implements Serializable{
-
-    private Integer id;
+@Entity
+public class Producto{
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+    @ColumnInfo(name = "nombre")
     private String nombre;
+    @ColumnInfo(name = "desc")
     private String descripcion;
+    @ColumnInfo(name = "precio")
     private Double precio;
+
+    @Embedded(prefix = "cat_id")
     private Categoria categoria;
 
     public Producto(String nombre, String descripcion, Double precio, Categoria categoria) {
@@ -17,14 +28,14 @@ public class Producto implements Serializable{
         this.precio = precio;
         this.categoria = categoria;
     }
-
+    @Ignore
     public Producto(String nombre, Double precio, Categoria categoria) {
         this.nombre = nombre;
         this.precio = precio;
         this.categoria = categoria;
     }
-
-    public Producto(Integer id, String nombre, String descripcion, Double precio, Categoria categoria) {
+    @Ignore
+    public Producto(long id, String nombre, String descripcion, Double precio, Categoria categoria) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -32,11 +43,11 @@ public class Producto implements Serializable{
         this.categoria = categoria;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -75,7 +86,9 @@ public class Producto implements Serializable{
 
     @Override
     public String toString() {
-        return nombre+ "( $" + precio +")";
+        return "Producto : "+nombre+ "( $" + precio +
+                ")\n "+categoria.toString()+
+                "\n Descripción: "+ descripcion;
 
     }
 

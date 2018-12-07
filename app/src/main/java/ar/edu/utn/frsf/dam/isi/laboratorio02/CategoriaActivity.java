@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.DAOCategoria;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.Gestor;
+import ar.edu.utn.frsf.dam.isi.laboratorio02.dao.MyDataBase;
 import ar.edu.utn.frsf.dam.isi.laboratorio02.modelo.Categoria;
 
 public class CategoriaActivity extends AppCompatActivity {
@@ -15,7 +18,7 @@ public class CategoriaActivity extends AppCompatActivity {
     private EditText textoCategoria;
     private Button btnCrearCategorias;
     private Button btnMenu;
-
+    private DAOCategoria catDAO;
 
 
     @Override
@@ -25,13 +28,14 @@ public class CategoriaActivity extends AppCompatActivity {
 
         textoCategoria=(EditText) findViewById(R.id.editTextNombreCat);
         btnCrearCategorias = (Button) findViewById(R.id.buttonCrearCategoria);
-
+        catDAO= MyDataBase.getInstance(this).getCategoriaDao();
         btnCrearCategorias.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final Categoriarest nuevaCategoriaRes= new Categoriarest();
+                //final Categoriarest nuevaCategoriaRes= new Categoriarest();
                 final Categoria nuevaCategoria= new Categoria();
+
                 nuevaCategoria.setNombre(textoCategoria.getText().toString());
 
                 //verifico que no este vacio
@@ -49,8 +53,9 @@ public class CategoriaActivity extends AppCompatActivity {
 
                         @Override
                         public void run() {
-                            nuevaCategoriaRes.crearCategoria(nuevaCategoria);
-                            final CharSequence text = "El la categoria "+textoCategoria.getText().toString()+"fue creada";
+
+                            final long id =catDAO.insert(nuevaCategoria);
+                            final CharSequence text = "El la categoria "+textoCategoria.getText().toString()+"fue creada con el id: "+ id;
 
                             runOnUiThread(new Runnable(){
 

@@ -1,16 +1,21 @@
 package ar.edu.utn.frsf.dam.isi.laboratorio02.modelo;
 
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+@Entity
 public class Pedido implements Serializable{
 
     public enum Estado { REALIZADO, ACEPTADO, RECHAZADO,EN_PREPARACION,LISTO,ENTREGADO,CANCELADO}
-
+    @PrimaryKey(autoGenerate = true)
     private Integer id;
     private Date fecha;
+    @Embedded
     private List<PedidoDetalle> detalle;
     private Estado estado;
     private String direccionEnvio;
